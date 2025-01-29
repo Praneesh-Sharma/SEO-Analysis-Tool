@@ -20,14 +20,18 @@ if st.button("Analyze"):
     if url:
         with st.spinner("Analyzing..."):
             seo_data = analyze_seo(url)
-            ai_suggestions = generate_ai_suggestions(seo_data)
 
-        # Display Results
-        st.subheader("📊 SEO Analysis Results")
-        st.json(seo_data)
+            if "error" in seo_data:  # Check if there's an error in the response
+                st.error(f"❌ {seo_data['error']}")
+            else:
+                ai_suggestions = generate_ai_suggestions(seo_data)
 
-        st.subheader("🤖 AI-Powered SEO Suggestions")
-        st.write(ai_suggestions)
+                # Display Results
+                st.subheader("📊 SEO Analysis Results")
+                st.json(seo_data)
+
+                st.subheader("🤖 AI-Powered SEO Suggestions")
+                st.write(ai_suggestions)
 
     else:
         st.error("❌ Please enter a valid URL")
