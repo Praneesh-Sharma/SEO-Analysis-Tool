@@ -33,63 +33,61 @@ def analyze_seo(url):
         # Readability Score
         readability = textstat.flesch_reading_ease(text_content)
 
-        # return {
-        #     "URL": url,
-        #     "Title": title,
-        #     "Meta Description": meta_desc,
-        #     "Headers": headers,
-        #     "Top Keywords": top_keywords,
-        #     "Readability Score": readability
-        # }
+        # Return SEO analysis as a JSON-like structure
+        seo_data = {
+            "URL": url,
+            "Title": title,
+            "Meta Description": meta_desc,
+            "Headers": headers,
+            "Top Keywords": top_keywords,
+            "Readability Score": readability
+        }
 
-        # Format output
-        output = f"""
+        return seo_data
+    except Exception as e:
+        return {"error": f"An error occurred: {str(e)}"}
+
+def format_output(seo_data):
+    output = f"""
 SEO Analysis Results:
 
-- **URL**: {url}
+- **URL**: {seo_data['URL']}
   
-- **Title**: *{title}*
+- **Title**: *{seo_data['Title']}*
 
-- **Meta Description**: {meta_desc}
+- **Meta Description**: {seo_data['Meta Description']}
 
 ---
 
 **Headers:**
 """
-        for h, texts in headers.items():
-            output += f"- **{h}**: \n"
-            for text in texts:
-                output += f"  - {text}\n"
-        
-        output += f"""
+    for h, texts in seo_data['Headers'].items():
+        output += f"- **{h}**: \n"
+        for text in texts:
+            output += f"  - {text}\n"
+    
+    output += f"""
 ---
 
 **Top Keywords:**
 """
-        for word, count in top_keywords:
-            output += f"1. *{word}* - {count} occurrences\n"
+    for word, count in seo_data['Top Keywords']:
+        output += f"1. *{word}* - {count} occurrences\n"
 
-        output += f"""
+    output += f"""
 ---
 
-**Readability Score**: {readability} (indicating that the text may need improvement in sentence structure for better readability).
-
----
-
-### AI-Powered SEO Suggestions:
-- **Title**: Make the title more descriptive, e.g., *"Apple Updates iOS: iPhones Can Now Connect to Starlink Satellites, Revolutionizing Communication"*
-- **Meta Description**: Expand the description to include more keywords and a clear call to action.
-- **Keyword Strategy**: Add specific terms like *"Starlink satellite connectivity"* or *"Apple iPhone satellite communication"*.
-- **Readability**: Break up long sentences for easier scanning. Consider subheadings.
+**Readability Score**: {seo_data['Readability Score']}
 """
-
-        return output
-    except Exception as e:
-        return {"error": f"An error occurred: {str(e)}"}
+    return output
 
 if __name__ == "__main__":
     test_url = "https://www.livemint.com/companies/apple-iphones-to-support-starlink-satellite-connectivity-in-the-us-11738125647557.html"
-    result = analyze_seo(test_url)
+    seo_data = analyze_seo(test_url)
     
-    print("SEO Analysis Result:")
-    print(result)
+    # Display SEO Analysis in formatted output
+    if "error" not in seo_data:
+        formatted_output = format_output(seo_data)
+        print(formatted_output)
+    else:
+        print(seo_data["error"])
