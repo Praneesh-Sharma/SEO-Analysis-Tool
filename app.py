@@ -1,7 +1,7 @@
 import nltk
 import streamlit as st
 import pandas as pd
-from seo_analysis import analyze_seo
+from seo_analysis import analyze_seo, format_output
 from suggestions import generate_ai_suggestions
 
 # Automatically download punkt resource if not present
@@ -28,7 +28,8 @@ if st.button("Analyze"):
 
                 # Display Results
                 st.subheader("📊 SEO Analysis Results")
-                st.json(seo_data)
+                formatted_output = format_output(seo_data)
+                st.markdown(formatted_output)
 
                 st.subheader("🤖 AI-Powered SEO Suggestions")
                 st.write(ai_suggestions)
