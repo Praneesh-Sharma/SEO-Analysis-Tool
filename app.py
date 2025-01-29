@@ -46,8 +46,8 @@ if st.button("Analyze"):
                 st.write(ai_suggestions)
 
 # Show PageSpeed Insights if requested
-if st.session_state.seo_data and st.button("Generate PageSpeed Insights"):
-    with st.spinner("Generating PageSpeed Insights..."):
+if st.session_state.seo_data and st.button("Fetch More Insights"):
+    with st.spinner("Fetching Insights..."):
         pagespeed_insights = get_page_speed_insights(url)
         st.session_state.pagespeed_insights = pagespeed_insights
 
