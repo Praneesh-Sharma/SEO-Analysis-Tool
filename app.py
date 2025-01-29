@@ -1,7 +1,14 @@
+import nltk
 import streamlit as st
 import pandas as pd
 from seo_analysis import analyze_seo
 from suggestions import generate_ai_suggestions
+
+# Automatically download punkt resource if not present
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
 
 st.set_page_config(page_title="AI SEO Analysis Tool", layout="wide")
 st.title("🚀 AI-Powered SEO Analysis Tool")
