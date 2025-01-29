@@ -1,0 +1,12 @@
+streamlit
+beautifulsoup4
+requests
+google-api-python-client
+nltk
+spacy
+textstat
+groq
+toml
+pandas
+matplotlib
+plotly
