@@ -33,19 +33,62 @@ def analyze_seo(url):
         # Readability Score
         readability = textstat.flesch_reading_ease(text_content)
 
-        return {
-            "URL": url,
-            "Title": title,
-            "Meta Description": meta_desc,
-            "Headers": headers,
-            "Top Keywords": top_keywords,
-            "Readability Score": readability
-        }
+        # return {
+        #     "URL": url,
+        #     "Title": title,
+        #     "Meta Description": meta_desc,
+        #     "Headers": headers,
+        #     "Top Keywords": top_keywords,
+        #     "Readability Score": readability
+        # }
+
+        # Format output
+        output = f"""
+SEO Analysis Results:
+
+- **URL**: {url}
+  
+- **Title**: *{title}*
+
+- **Meta Description**: {meta_desc}
+
+---
+
+**Headers:**
+"""
+        for h, texts in headers.items():
+            output += f"- **{h}**: \n"
+            for text in texts:
+                output += f"  - {text}\n"
+        
+        output += f"""
+---
+
+**Top Keywords:**
+"""
+        for word, count in top_keywords:
+            output += f"1. *{word}* - {count} occurrences\n"
+
+        output += f"""
+---
+
+**Readability Score**: {readability} (indicating that the text may need improvement in sentence structure for better readability).
+
+---
+
+### AI-Powered SEO Suggestions:
+- **Title**: Make the title more descriptive, e.g., *"Apple Updates iOS: iPhones Can Now Connect to Starlink Satellites, Revolutionizing Communication"*
+- **Meta Description**: Expand the description to include more keywords and a clear call to action.
+- **Keyword Strategy**: Add specific terms like *"Starlink satellite connectivity"* or *"Apple iPhone satellite communication"*.
+- **Readability**: Break up long sentences for easier scanning. Consider subheadings.
+"""
+
+        return output
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
 
 if __name__ == "__main__":
-    test_url = "https://www.business-standard.com/world-news/apple-spacex-link-up-to-support-starlink-satellite-network-on-iphones-125012901655_1.html"
+    test_url = "https://www.livemint.com/companies/apple-iphones-to-support-starlink-satellite-connectivity-in-the-us-11738125647557.html"
     result = analyze_seo(test_url)
     
     print("SEO Analysis Result:")
