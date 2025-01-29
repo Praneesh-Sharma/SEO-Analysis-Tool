@@ -1,11 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import textstat
-import nltk
-from nltk.tokenize import word_tokenize
+import spacy
 
-# Force download of 'punkt' tokenizer
-nltk.download('punkt', force=True)
+# Load the spaCy model
+nlp = spacy.load('en_core_web_sm')
 
 def analyze_seo(url):
     try:
@@ -19,11 +18,12 @@ def analyze_seo(url):
         # Header Tags
         headers = {f"H{i}": [h.get_text() for h in soup.find_all(f"h{i}")] for i in range(1, 7)}
 
-        # Keyword Density
+        # Keyword Density using spaCy
         text_content = soup.get_text()
-        words = word_tokenize(text_content.lower())
-        word_freq = nltk.FreqDist(words)
-        top_keywords = word_freq.most_common(10)
+        doc = nlp(text_content.lower())  # Process text with spaCy
+        words = [token.text for token in doc if token.is_alpha]  # Extract only alphabetic tokens
+        word_freq = {word: words.count(word) for word in set(words)}  # Count word frequencies
+        top_keywords = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:10]
 
         # Readability Score
         readability = textstat.flesch_reading_ease(text_content)
@@ -40,12 +40,7 @@ def analyze_seo(url):
         return {"error": str(e)}
 
 if __name__ == "__main__":
-    # Test URL (replace with any URL you want to analyze)
     test_url = "https://www.business-standard.com/world-news/apple-spacex-link-up-to-support-starlink-satellite-network-on-iphones-125012901655_1.html"
-
-    # Call the analyze_seo function and print the result
     result = analyze_seo(test_url)
-
-    # Print the result
     print("SEO Analysis Result:")
     print(result)
