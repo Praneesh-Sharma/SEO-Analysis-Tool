@@ -8,10 +8,12 @@ nlp = spacy.load('en_core_web_sm')
 
 def analyze_seo(url):
     try:
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        response = requests.get(url, headers=headers, timeout=5)
+        response = requests.get(url, timeout=5)
+        
+        # Check for access denial by status code
+        if response.status_code != 200:
+            return {"error": f"URL cannot be accessed. HTTP Status Code: {response.status_code}"}
+        
         soup = BeautifulSoup(response.text, "html.parser")
 
         title = soup.title.string if soup.title else "No Title Found"
@@ -21,11 +23,11 @@ def analyze_seo(url):
         # Header Tags
         headers = {f"H{i}": [h.get_text() for h in soup.find_all(f"h{i}")] for i in range(1, 7)}
 
-        # Keyword Density using spaCy
+        # Keyword Density using spaCy for tokenization
         text_content = soup.get_text()
-        doc = nlp(text_content.lower())  # Process text with spaCy
-        words = [token.text for token in doc if token.is_alpha]  # Extract only alphabetic tokens
-        word_freq = {word: words.count(word) for word in set(words)}  # Count word frequencies
+        doc = nlp(text_content.lower())
+        words = [token.text for token in doc if token.is_alpha]
+        word_freq = {word: words.count(word) for word in set(words)}
         top_keywords = sorted(word_freq.items(), key=lambda x: x[1], reverse=True)[:10]
 
         # Readability Score
@@ -40,10 +42,11 @@ def analyze_seo(url):
             "Readability Score": readability
         }
     except Exception as e:
-        return {"error": str(e)}
+        return {"error": f"An error occurred: {str(e)}"}
 
 if __name__ == "__main__":
     test_url = "https://www.business-standard.com/world-news/apple-spacex-link-up-to-support-starlink-satellite-network-on-iphones-125012901655_1.html"
     result = analyze_seo(test_url)
+    
     print("SEO Analysis Result:")
     print(result)
