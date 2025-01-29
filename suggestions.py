@@ -1,7 +1,18 @@
 import toml
 import groq
+import os
 
-config = toml.load("config.toml")
+config_path = os.path.join("config", "config.toml")
+
+try:
+    config = toml.load(config_path)
+    print("Config loaded successfully:")
+    print(config)  # This will show the contents of the config.toml file
+except FileNotFoundError:
+    print(f"Error: The file {config_path} was not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
 GROQ_API_KEY = config["GROQ"]["API_KEY"]
 
 def generate_ai_suggestions(seo_data):
