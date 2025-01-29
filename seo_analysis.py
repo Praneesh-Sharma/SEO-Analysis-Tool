@@ -4,7 +4,8 @@ import textstat
 import nltk
 from nltk.tokenize import word_tokenize
 
-nltk.download("punkt")
+# Force download of 'punkt' tokenizer
+nltk.download('punkt', force=True)
 
 def analyze_seo(url):
     try:
@@ -37,3 +38,14 @@ def analyze_seo(url):
         }
     except Exception as e:
         return {"error": str(e)}
+
+if __name__ == "__main__":
+    # Test URL (replace with any URL you want to analyze)
+    test_url = "https://www.business-standard.com/world-news/apple-spacex-link-up-to-support-starlink-satellite-network-on-iphones-125012901655_1.html"
+
+    # Call the analyze_seo function and print the result
+    result = analyze_seo(test_url)
+
+    # Print the result
+    print("SEO Analysis Result:")
+    print(result)
