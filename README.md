@@ -17,15 +17,21 @@ This tool provides an easy way to analyze websites by evaluating SEO performance
 
 1. Clone the repository:
    ```
-   git clone [<repo-url>](https://github.com/Praneesh-Sharma/SEO-Analysis-Tool.git)
+   git clone https://github.com/Praneesh-Sharma/SEO-Analysis-Tool.git
    ```
 
-2. Install dependencies:
+2. Create and Activacte Virtual Environment (for Windows)
+   ```
+   python -m venv venv
+   venv\Scripts\activate
+   ``` 
+
+3. Install dependencies:
    ```
    pip install -r requirements.txt
    ```
 
-3. Fill in your API keys in config/config.toml
+4. Fill in your API keys in config/config.toml
    - Create a config/config.toml file in the root directory
    - On your Google Cloud console, enable the PageSpeed API from the Library, and then create a new API key from the Credentials tab
    - Add your API keys for Groq and Google API in this file. Here's the template:
@@ -35,10 +41,6 @@ This tool provides an easy way to analyze websites by evaluating SEO performance
     
     [google_api]
     key = "YOUR_GOOGLE_API_KEY"
-    ```
-4.  Activate the virtual environment
-    ```
-    source venv/bin/activate
     ```
 
 5. Run the application:
