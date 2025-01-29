@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import textstat
 import nltk
 from nltk.tokenize import word_tokenize
-import json
 
 nltk.download("punkt")
 
